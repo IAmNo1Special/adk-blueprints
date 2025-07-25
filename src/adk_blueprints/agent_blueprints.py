@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 from google.adk.agents import LlmAgent
 
-from adk_blueprints.tool_blueprints import SqlDbTools
-from adk_blueprints.instruction_blueprints import sqldb_tool_instruction
-from adk_blueprints.description_blueprints import sqldb_agent_description
+from adk_blueprints.tool_blueprints import SqlDbTools, ImagenTool
+from adk_blueprints.instruction_blueprints import sqldb_tool_instruction, imagen_tool_instruction
+from adk_blueprints.description_blueprints import sqldb_agent_description, imagen_agent_description
 
 
 load_dotenv()
@@ -28,6 +28,27 @@ class SqlDbAgent(LlmAgent):
             description=sqldb_agent_description,
             instruction=sqldb_tool_instruction,
             tools=SqlDbTools(db_uri=db_uri, model=model, model_provider=model_provider).list_tools(),
+            **kwargs
+        )
+
+class ImagenAgent(LlmAgent):
+    '''
+    A class to manage image generation agents for generating images based on a prompt.
+    '''
+    def __init__(self, model: str, **kwargs):
+        '''
+        Initialize the ImagenAgent with a model connection.
+        
+        Args:
+            model: The model to use for image generation. Example: 'imagen-3.0-generate-002'.
+            **kwargs: Additional keyword arguments to pass to the LlmAgent constructor. See google.adk.agents.LlmAgent constructor for more details.
+        '''
+        super().__init__(
+            name='imagen_agent',
+            model=model,
+            description=imagen_agent_description,
+            instruction=imagen_tool_instruction,
+            tools=ImagenTool().list_tools(),
             **kwargs
         )
 
