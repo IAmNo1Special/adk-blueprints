@@ -9,6 +9,7 @@ from google.adk.sessions import InMemorySessionService
 
 from adk_blueprints import SqlDbAgent
 
+
 load_dotenv()
 
 APP_NAME = 'sqldb_agent_gradex_db_agent_example'
@@ -90,3 +91,4 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+
