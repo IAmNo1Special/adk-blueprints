@@ -11,22 +11,22 @@ from adk_blueprints import SqlDbAgent
 
 load_dotenv()
 
-APP_NAME = "sqldb_agent"
-USER_ID = "user_id"
-SESSION_ID = "session_id"
+APP_NAME = 'sqldb_agent_gradex_db_agent_example'
+USER_ID = 'user_id'
+SESSION_ID = 'session_id'
+
+db_uri='sqlite:///examples/sqldb_agent/gradex_db_agent/gradex.db'
 
 sqldb_agent = SqlDbAgent(
-    db_uri="sqlite:///examples/sqldb_agent/gradex_db_agent/gradex.db",
-    model="gemini-2.5-flash",
-    model_provider="google_genai"
+    db_uri=db_uri,
+    model='gemini-2.5-flash',
+    model_provider='google_genai'
 )
 
-session_service = InMemorySessionService()
-memory_service = InMemoryMemoryService()
-runner = Runner(app_name=APP_NAME, agent=sqldb_agent, session_service=session_service, memory_service=memory_service)
-
 async def call_agent_async(runner: Runner, user_id: str, session_id: str, prompt: str):
-    """Sends the query to the agent and calls on_message with each response."""
+    '''
+    Sends the query to the agent and returns the response.
+    '''
     content = types.Content(
         role='user',
         parts=[
@@ -35,7 +35,7 @@ async def call_agent_async(runner: Runner, user_id: str, session_id: str, prompt
     )
     async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=content):
         if not event.content:
-            print(f"<<< [{event.author}]: {event}")
+            print(f'<<< [{event.author}]: {event}')
             return
             
         author = event.author
@@ -46,27 +46,33 @@ async def call_agent_async(runner: Runner, user_id: str, session_id: str, prompt
                 text = part.text
                 # Truncate long text to 200 characters
                 if len(text) > 200:
-                    text = text[:197] + "..."
-                print(f"<<< [{author}]: {text}")
+                    text = text[:197] + '...'
+                print(f'<<< [{author}]: {text}')
             elif part.function_call:
                 func_call = part.function_call
-                print(f"<<< [{author}]: Function call: {func_call.name}")
+                print(f'<<< [{author}]: Function call: {func_call.name}')
                 # Truncate args if too long
                 args = json.dumps(func_call.args)
                 if len(args) > 100:
-                    args = args[:97] + "..."
-                print(f"   ^^^ Args: {args}")
+                    args = args[:97] + '...'
+                print(f'   ^^^ Args: {args}')
             elif part.function_response:
                 func_response = part.function_response
-                print(f"<<< [{author}]: Function response: {func_response.name}")
+                print(f'<<< [{author}]: Function response: {func_response.name}')
                 # Truncate response if too long
                 response = json.dumps(func_response.response)
                 if len(response) > 100:
-                    response = response[:97] + "..."
-                print(f"^^^ Response: {response}")
+                    response = response[:97] + '...'
+                print(f'^^^ Response: {response}')
 
 async def main():
+    '''
+    Main function to run the gradex db agent.
+    '''
     try:
+        session_service = InMemorySessionService()
+        memory_service = InMemoryMemoryService()
+        runner = Runner(app_name=APP_NAME, agent=sqldb_agent, session_service=session_service, memory_service=memory_service)
         await runner.session_service.create_session(
             app_name=APP_NAME,
             user_id=USER_ID,
@@ -74,13 +80,13 @@ async def main():
             state={}
         )
     except Exception as e:
-        print(f"Error creating session: {e}")
+        print(f'Error creating session: {e}')
         return
     while True:
-        prompt = input(">>> [User Query]: ")
+        prompt = input('>>> [User Query]: ')
         if not prompt:
             break
         await call_agent_async(runner, USER_ID, SESSION_ID, prompt)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     asyncio.run(main())
