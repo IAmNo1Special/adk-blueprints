@@ -23,7 +23,7 @@ class SqlDbAgent(LlmAgent):
             **kwargs: Additional keyword arguments to pass to the LlmAgent constructor. See google.adk.agents.LlmAgent constructor for more details.
         '''
         super().__init__(
-            name="sqldb_agent",
+            name='sqldb_agent',
             model=model,
             description=sqldb_agent_description,
             instruction=sqldb_tool_instruction,

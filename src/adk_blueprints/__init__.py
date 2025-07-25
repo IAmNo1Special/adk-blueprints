@@ -1,4 +1,6 @@
-"""ADK Blueprints - A collection of reusable components for ADK applications."""
+'''
+ADK Blueprints - A collection of reusable components to use with the google-adk framework.
+'''
 
 __version__ = '0.1.0'
 

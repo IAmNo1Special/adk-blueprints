@@ -10,7 +10,9 @@ from langchain_community.tools.sql_database.tool import (
 from google.adk.tools.langchain_tool import LangchainTool
 
 class SqlDbTools:
-    """A class to manage SQL database tools for interacting with a SQL database."""
+    '''
+    A class to manage SQL database tools for interacting with a SQL database.
+    '''
     
     def __init__(self, db_uri: str, model: str, model_provider: str):
         '''
@@ -18,8 +20,8 @@ class SqlDbTools:
         
         Args:
             db_uri: The database connection URI.
-            model: The model to use for the SQL database tools. Example: 'gemini-2.5-flash'.
-            model_provider: The model provider to use for the SQL database tools. Example: 'google_genai'.
+            model: The model to use for the SQL database tools. Example: "gemini-2.5-flash".
+            model_provider: The model provider to use for the SQL database tools. Example: "google_genai".
         '''
         load_dotenv()
         self.llm = init_chat_model(model, model_provider=model_provider)
