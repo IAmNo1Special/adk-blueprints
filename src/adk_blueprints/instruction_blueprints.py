@@ -11,3 +11,6 @@ sqldb_tool_instruction=(
     '**NEVER** use any write queries.'
 )
 
+imagen_tool_instruction=(
+    'Use the "generate_images" tool to generate the provided number of images based on the provided image prompt.'
+)
