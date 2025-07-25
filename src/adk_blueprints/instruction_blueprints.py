@@ -13,4 +13,6 @@ sqldb_tool_instruction=(
 
 imagen_tool_instruction=(
     'Use the "generate_images" tool to generate the provided number of images based on the provided image prompt.'
+    '# Rules for using the tools:'
+    'When the image prompt is not clear, rewrite the prompt, keeping the original meaning as close as possible.'
 )
