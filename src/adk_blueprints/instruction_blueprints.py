@@ -16,3 +16,4 @@ imagen_tool_instruction=(
     '# Rules for using the tools:'
     'When the image prompt is not clear, rewrite the prompt, keeping the original meaning as close as possible.'
 )
+
