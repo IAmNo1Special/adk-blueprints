@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 from google.adk.agents import LlmAgent
 
-from tool_blueprints import SqlDbTools
-from instruction_blueprints import sqldb_tool_instruction
-from description_blueprints import sqldb_agent_description
+from adk_blueprints.tool_blueprints import SqlDbTools
+from adk_blueprints.instruction_blueprints import sqldb_tool_instruction
+from adk_blueprints.description_blueprints import sqldb_agent_description
 
 
 load_dotenv()
