@@ -7,16 +7,16 @@ from google.adk.runners import Runner
 from google.adk.memory import InMemoryMemoryService
 from google.adk.sessions import InMemorySessionService
 
-from adk_blueprints import ImagenAgent
+from adk_blueprints import ImagenPaidAgent
 
 
 load_dotenv()
 
-APP_NAME = 'image_agent_example'
+APP_NAME = 'imagen_paid_agent_example'
 USER_ID = 'user_id'
 SESSION_ID = 'session_id'
 
-sqldb_agent = ImagenAgent()
+imagen_agent = ImagenPaidAgent(model='gemini-2.5-flash', imagen_model='imagen-4.0-generate-preview-06-06')
 
 async def call_agent_async(runner: Runner, user_id: str, session_id: str, prompt: str):
     '''
@@ -62,12 +62,12 @@ async def call_agent_async(runner: Runner, user_id: str, session_id: str, prompt
 
 async def main():
     '''
-    Main function to run the gradex db agent.
+    Main function to run the imagen agent.
     '''
     try:
         session_service = InMemorySessionService()
         memory_service = InMemoryMemoryService()
-        runner = Runner(app_name=APP_NAME, agent=sqldb_agent, session_service=session_service, memory_service=memory_service)
+        runner = Runner(app_name=APP_NAME, agent=imagen_agent, session_service=session_service, memory_service=memory_service)
         await runner.session_service.create_session(
             app_name=APP_NAME,
             user_id=USER_ID,

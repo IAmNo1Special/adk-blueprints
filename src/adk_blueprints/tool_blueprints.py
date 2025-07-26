@@ -42,17 +42,17 @@ class SqlDbTools:
         '''
         return [self.info_tool, self.list_tool, self.query_checker_tool, self.query_tool]
 
-class ImagenTool:
+class ImagenPaidTool:
     '''
     A class for generating images using the Imagen model.
     '''
     
-    def __init__(self, model: str = 'imagen-3.0-generate-002'):
+    def __init__(self, model: str):
         '''
         Initialize the ImagenTool with the necessary client.
         
         Args:
-            model: The model to use for image generation. Default: "imagen-3.0-generate-002".
+            model: The model to use for image generation. Example: "imagen-4.0-generate-preview-06-06".
         '''
         load_dotenv()
         self.genai_client = genai.Client()
