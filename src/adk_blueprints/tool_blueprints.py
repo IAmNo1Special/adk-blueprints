@@ -1,23 +1,16 @@
-from dotenv import load_dotenv
-from langchain_community.utilities.sql_database import SQLDatabase
-from langchain.chat_models import init_chat_model
-from langchain_community.tools.sql_database.tool import (
-    InfoSQLDatabaseTool,
-    ListSQLDatabaseTool,
-    QuerySQLCheckerTool,
-    QuerySQLDatabaseTool,
-)
-from google.adk.tools.langchain_tool import LangchainTool
-from google.genai import types
-from google import genai
 from typing import List
+
+from dotenv import load_dotenv
+from google.genai import types
+from google.adk.tools.langchain_tool import LangchainTool
+
 
 class SqlDbTools:
     '''
     A class to manage SQL database tools for interacting with a SQL database.
     '''
     
-    def __init__(self, db_uri: str, model: str, model_provider: str):
+    def __init__(self, db_uri: str, model: str, model_provider: str) -> None:
         '''
         Initialize the SqlDbTools with a database connection.
         
@@ -26,6 +19,15 @@ class SqlDbTools:
             model: The model to use for the SQL database tools. Example: "gemini-2.5-flash".
             model_provider: The model provider to use for the SQL database tools. Example: "google_genai".
         '''
+        from langchain_community.utilities.sql_database import SQLDatabase
+        from langchain.chat_models import init_chat_model
+        from langchain_community.tools.sql_database.tool import (
+            InfoSQLDatabaseTool,
+            ListSQLDatabaseTool,
+            QuerySQLCheckerTool,
+            QuerySQLDatabaseTool,
+        )
+
         load_dotenv()
         self.llm = init_chat_model(model, model_provider=model_provider)
         self.db = SQLDatabase.from_uri(db_uri)
@@ -47,13 +49,15 @@ class ImagenPaidTool:
     A class for generating images using the Imagen model.
     '''
     
-    def __init__(self, model: str):
+    def __init__(self, model: str) -> None:
         '''
         Initialize the ImagenTool with the necessary client.
         
         Args:
             model: The model to use for image generation. Example: "imagen-4.0-generate-preview-06-06".
         '''
+        from google import genai
+
         load_dotenv()
         self.genai_client = genai.Client()
         self.model = model
@@ -90,9 +94,45 @@ class ImagenPaidTool:
             print(f'No images generated: {response}')
             return f'No images generated: {response}'
 
-    def list_tools(self):
+    def list_tools(self) -> List:
         '''
         Returns a list of all the ImagenTool's tools.
         '''
         return [self.generate_images]
 
+class GmailTools():
+    '''
+    A class for interacting with the Gmail API.
+    '''
+    def __init__(self) -> None:
+        '''
+        Initialize the GmailTools with the necessary client.
+        '''
+        from langchain_google_community.gmail.utils import (
+            build_resource_service,
+            get_gmail_credentials,
+        )
+        from langchain_google_community import GmailToolkit
+
+
+        # Can review scopes here https://developers.google.com/gmail/api/auth/scopes
+        # For instance, readonly scope is 'https://www.googleapis.com/auth/gmail.readonly'
+        credentials = get_gmail_credentials(
+            token_file="token.json",
+            scopes=["https://mail.google.com/"],
+            client_secrets_file="credentials.json",
+        )
+        api_resource = build_resource_service(credentials=credentials)
+        toolkit = GmailToolkit(api_resource=api_resource)
+        tools = toolkit.get_tools()
+        self.create_gmail_draft = LangchainTool(tools[0])
+        self.send_gmail_message = LangchainTool(tools[1])
+        self.search_gmail = LangchainTool(tools[2])
+        self.get_gmail_message = LangchainTool(tools[3])
+        self.get_gmail_thread = LangchainTool(tools[4])
+    
+    def list_tools(self):
+        '''
+        Returns a list of all the GmailTools's tools.
+        '''
+        return [self.create_gmail_draft, self.send_gmail_message, self.search_gmail, self.get_gmail_message, self.get_gmail_thread]

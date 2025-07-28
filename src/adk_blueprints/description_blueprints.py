@@ -6,3 +6,6 @@ imagen_paid_agent_description=(
     'Uses the connected Imagen model to generate images based on a prompt.'
 )
 
+gmail_agent_description=(
+    'Uses the connected Gmail API to interact with Gmail.'
+)

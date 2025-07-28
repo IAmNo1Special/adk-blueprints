@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 from google.adk.agents import LlmAgent
 
-from adk_blueprints.tool_blueprints import SqlDbTools, ImagenPaidTool
-from adk_blueprints.instruction_blueprints import sqldb_tool_instruction, imagen_paid_tool_instruction
-from adk_blueprints.description_blueprints import sqldb_agent_description, imagen_paid_agent_description
+from adk_blueprints.tool_blueprints import SqlDbTools, ImagenPaidTool, GmailTools
+from adk_blueprints.instruction_blueprints import sqldb_tool_instruction, imagen_paid_tool_instruction, gmail_tool_instruction
+from adk_blueprints.description_blueprints import sqldb_agent_description, imagen_paid_agent_description, gmail_agent_description
 
 
 load_dotenv()
@@ -53,3 +53,24 @@ class ImagenPaidAgent(LlmAgent):
             **kwargs
         )
 
+class GmailAgent(LlmAgent):
+    '''
+    A class to manage Gmail agents for interacting with the Gmail API.
+    '''
+    def __init__(self, model: str, **kwargs):
+        '''
+        Initialize the GmailAgent with a model connection.
+        
+        Args:
+            model: The model to use for Gmail interaction. Example: 'gemini-2.5-flash'.
+            **kwargs: Additional keyword arguments to pass to the LlmAgent constructor. See google.adk.agents.LlmAgent constructor for more details.
+        '''
+        gmail_tools = GmailTools()
+        super().__init__(
+            name='gmail_agent',
+            model=model,
+            description=gmail_agent_description,
+            instruction=gmail_tool_instruction,
+            tools=[gmail_tools.send_gmail_message, gmail_tools.get_gmail_message, gmail_tools.get_gmail_thread, gmail_tools.search_gmail],
+            **kwargs
+        )

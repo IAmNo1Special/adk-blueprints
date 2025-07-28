@@ -17,3 +17,11 @@ imagen_paid_tool_instruction=(
     'When the image prompt is not clear, rewrite the prompt, keeping the original meaning as close as possible.'
 )
 
+gmail_tool_instruction=(
+    'Use the "create_gmail_draft" tool to create a draft email with the provided message fields.'
+    'Use the "send_gmail_message" tool to send email messages. The input is the message, recipients'
+    'Use the "search_gmail" tool to search for email messages or threads. The input must be a valid Gmail query. The output is a JSON list of the requested resource.'
+    'Use the "get_gmail_message" tool to fetch an email by message ID. Returns the thread ID, snippet, body, subject, sender, and recipients.'
+    'Use the "get_gmail_thread" tool to search for email messages. The input must be a valid Gmail query. The output is a JSON list of messages.'
+)
+
