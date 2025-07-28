@@ -136,3 +136,32 @@ class GmailTools():
         Returns a list of all the GmailTools's tools.
         '''
         return [self.create_gmail_draft, self.send_gmail_message, self.search_gmail, self.get_gmail_message, self.get_gmail_thread]
+
+class GithubTools:
+    '''
+    A class for interacting with the Github API.
+    '''
+    def __init__(self) -> None:
+        '''
+        Initialize the GithubAgent with the necessary client.
+        '''
+        from langchain_community.agent_toolkits.github.toolkit import GitHubToolkit
+        from langchain_community.utilities.github import GitHubAPIWrapper
+
+
+        load_dotenv()
+
+        github = GitHubAPIWrapper()
+        toolkit = GitHubToolkit.from_github_api_wrapper(github)
+        base_tools = toolkit.get_tools()
+        self.tools = []
+        for tool in base_tools:
+            tool.name = tool.name.replace(' ', '-').replace('\'','').replace('(', '').replace(')', '')[:60]
+            self.tools.append(LangchainTool(tool))
+    
+    def list_tools(self):
+        '''
+        Returns a list of all the GithubTools's tools.
+        '''
+        return self.tools
+

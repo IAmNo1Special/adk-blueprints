@@ -74,3 +74,28 @@ class GmailAgent(LlmAgent):
             tools=[gmail_tools.send_gmail_message, gmail_tools.get_gmail_message, gmail_tools.get_gmail_thread, gmail_tools.search_gmail, gmail_tools.create_gmail_draft],
             **kwargs
         )
+
+class GithubAgent(LlmAgent):
+    '''
+    A class to manage Github agents for interacting with the Github API.
+    '''
+    def __init__(self, model: str, **kwargs):
+        '''
+        Initialize the GithubAgent with a model connection.
+        
+        Args:
+            model: The model to use for Github interaction. Example: 'gemini-2.5-flash'.
+            **kwargs: Additional keyword arguments to pass to the LlmAgent constructor. See google.adk.agents.LlmAgent constructor for more details.
+        '''
+        from adk_blueprints.tool_blueprints import GithubTools
+        from adk_blueprints.description_blueprints import github_agent_description
+        from adk_blueprints.instruction_blueprints import github_tool_instruction
+        super().__init__(
+            name='github_agent',
+            model=model,
+            description=github_agent_description,
+            instruction=github_tool_instruction,
+            tools=GithubTools().list_tools(),
+            **kwargs
+        )
+
