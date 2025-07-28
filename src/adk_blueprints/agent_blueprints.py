@@ -71,6 +71,6 @@ class GmailAgent(LlmAgent):
             model=model,
             description=gmail_agent_description,
             instruction=gmail_tool_instruction,
-            tools=[gmail_tools.send_gmail_message, gmail_tools.get_gmail_message, gmail_tools.get_gmail_thread, gmail_tools.search_gmail],
+            tools=[gmail_tools.send_gmail_message, gmail_tools.get_gmail_message, gmail_tools.get_gmail_thread, gmail_tools.search_gmail, gmail_tools.create_gmail_draft],
             **kwargs
         )
