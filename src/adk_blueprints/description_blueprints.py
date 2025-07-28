@@ -9,3 +9,8 @@ imagen_paid_agent_description=(
 gmail_agent_description=(
     'Uses the connected Gmail API to interact with Gmail.'
 )
+
+github_agent_description=(
+    'Uses the connected Github API to interact with Github.'
+)
+
