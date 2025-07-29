@@ -120,3 +120,8 @@ github_tool_instruction=(
     'This tool will create a review request on the open pull request that matches the current active branch. **VERY IMPORTANT**: You must specify the username of the person who is being requested as a string input parameter.'
 )
 
+redditsearch_tool_instruction = (
+    'Use the "reddit_search" tool to search for posts on Reddit.'
+    'Useful when you need to know post information on a subreddit.'
+)
+
