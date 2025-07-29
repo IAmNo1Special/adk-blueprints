@@ -165,3 +165,32 @@ class GithubTools:
         '''
         return self.tools
 
+class RedditSearchTool:
+    '''
+    A class for interacting with the Reddit API.
+    '''
+    def __init__(self) -> None:
+        '''
+        Initialize the RedditSearchTool with the necessary client.
+        '''
+        import os
+
+        from langchain_community.tools.reddit_search.tool import RedditSearchRun
+        from langchain_community.utilities.reddit_search import RedditSearchAPIWrapper
+
+
+        load_dotenv()
+
+        api_wrapper = RedditSearchAPIWrapper()
+        base_tool = RedditSearchRun(
+            api_wrapper=api_wrapper,
+        )
+        self.tool = LangchainTool(base_tool)
+        print(f'---------> {self.tool.name}---{self.tool.description}')
+    
+    def list_tools(self):
+        '''
+        Returns a list of all the RedditSearchTool's tools.
+        '''
+        return [self.tool]
+

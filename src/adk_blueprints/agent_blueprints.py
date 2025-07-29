@@ -99,3 +99,27 @@ class GithubAgent(LlmAgent):
             **kwargs
         )
 
+class RedditSearchAgent(LlmAgent):
+    '''
+    A class to manage Reddit Search agents for interacting with the Reddit Search API.
+    '''
+    def __init__(self, model: str, **kwargs):
+        '''
+        Initialize the RedditSearchAgent with a model connection.
+        
+        Args:
+            model: The model to use for google-adk agent. Example: 'gemini-2.5-flash'.
+            **kwargs: Additional keyword arguments to pass to the LlmAgent constructor. See google.adk.agents.LlmAgent constructor for more details.
+        '''
+        from adk_blueprints.tool_blueprints import RedditSearchTool
+        from adk_blueprints.description_blueprints import redditsearch_agent_description
+        from adk_blueprints.instruction_blueprints import redditsearch_tool_instruction
+        super().__init__(
+            name='redditsearch_agent',
+            model=model,
+            description=redditsearch_agent_description,
+            instruction=redditsearch_tool_instruction,
+            tools=RedditSearchTool().list_tools(),
+            **kwargs
+        )
+
